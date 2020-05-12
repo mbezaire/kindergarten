@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="styles.css">
+	<title>KinderClassRoom</title>
+</head>
+
+<body>
+	<div class="row">
+			<div style="width:20%;float: left;max-width: 40px;height:105px; display:flex;flex-direction:column; justify-content:space-around;">
+				<input onclick="seeMsgs()" type="image" src="images/msg.png" alt="Ann.s" class="featurebutton"/><br/>			
+				<input onclick="setTheme()" type="image" src="images/gear.png" alt="Set" class="featurebutton" style="display:none;"/><br/>		
+				<input onclick="getHelp()" type="image" src="images/help.png" alt=" ? " class="featurebutton"/><br/>		
+			</div>
+			<div style="width:80%;float: left;max-width: 1040px;">
+				<h2 style='text-align:center;max-width: 1000px;' id="classname">Ms. Frizzle's Kindergarten</h2>
+				<h3 style="text-align:center;max-width: 1000px;" id="classdesc">Location: Outerspace, Planet 3</h3>
+			</div>
+			<div style="width:20%;height:105px;float:left;max-width: 120px; display:flex;flex-direction:column; justify-content:space-around;" id="btnparent">
+				<button id="authorize_button" class="graybutton">Sign In</button>
+				<button id="signout_button" class="graybutton">Sign Out</button>
+				<button onclick="gotoClass()" id="gotoClass_button" class="graybutton">Classroom</button>
+				<button onclick="configure()" id="configure_button" class="graybutton">Schedule</button>
+		</div>
+	</div>
+	<div class="row">
+		<div id="tableHolder" class="column left" style="background-color:#FFFF00;height:650px">
+			<h2 style="text-align:center;">Schedule</h2>
+			<div class="row"  style="line-height:1;">
+				<input type="image" id="Navleft" alt="<" src="images/Navleft.png" onclick="Navleft()" done="0" style="line-height:2;width:10%;vertical-align:middle;"/><h3 style="text-align:center;vertical-align:middle;display:inline-block;width:80%" id="dayname">April 22, 2020</h3><input type="image" id="Navright" alt="[_]" src="images/Navright.png" onclick="Navright()" done="0" style="line-height:2;width:10%;vertical-align:middle;"/>
+			</div>
+			<table class='schedtable' id='tableSubjects'>
+			<hr/>
+			<table class='schedtable' id='tableExtra'>
+				<tr style='height:100%' id='exrow_01'  onclick='SelectExtra("exrow_01","exrow_01",1)'><td style='height:100%;text-align:right;'><img src='images/Todo.png' alt='[_]' style='height:40%;' ></td><td>Fun-Dos</td></tr>
+			</table>
+		</div>
+		<div class="column middle" style="background-color:#87CEFA;" id="taskHolder">
+			<div>
+				<h2 style="text-align:center;" id="curSubject">First</h2></div><div style="height:562px;overflow-y: scroll;" id="scrollme"><!--  class="frame" -->
+				<table id="instructionsTable" class="instructionsTable"></table>
+			</div>
+		</div>
+		<div class="column right">
+			<div  class="row" style="line-height:1;display: none;" id="dispann"><h3 style="text-align:center;vertical-align:middle;width:100%;" >Recent Announcements</h3><br/>
+			</div>
+		</div>
+		<div id="app" class="column right" style="display:none" ></div>
+	</div>
+	<!--Add buttons to initiate auth sequence and sign out-->
+	
+	<script type="text/javascript" src="javascripts/features.js"></script>
+	<script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+	<script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+	<script type="text/javascript">
+		var annsloaded=0;
+		var teachername={};
+		var smallGroupMeetingTime='2:00 pm';
+
+		var schedule={};
+		var scheduleBase={};
+		var customschedule={};
+		var savework={};
+		var coursework=[];
+		var topicsById={};
+		var assignment={"Monday":{}, "Tuesday":{}, "Wednesday":{}, "Thursday":{}, "Friday":{}};
+		var mmlinks={}
+		var readlinks={}
+		var musicLinks={}
+		var peLinks={}
+		var artLinks={}
+		var poemText = ""
+		var poemVideo = ''
+		var concatend = {}
+		var manual = {}
+		var updateflag=0
+		if (typeof window.colorTheme == 'undefined') {
+			var colorTheme={"sideBar":"#FFFF00", "mainTable":"#87CEFA"};			
+		}
+
+		document.getElementById("tableHolder").style.background=window.colorTheme["sideBar"];
+		document.getElementById("taskHolder").style.background=window.colorTheme["mainTable"];
+
+
+		var msgsShow = 1
+		seeMsgs() 
+		document.getElementById("dispann").style.display="none";		
+	</script>
+	<script defer type="text/javascript" src="javascripts/googlesignin.js"></script>
+	<script  type="text/javascript"  defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+	<script defer src="javascripts/displayfcns.js"></script>
+	<script defer src="javascripts/manual.js"></script>
+	<script defer src="javascripts/setschedule.js"></script>
+	<script defer src="javascripts/getclassinfo.js"></script>
+	<script defer async type="text/javascript" src="javascripts/youtubecover.js"></script>
+	<script defer async type="text/javascript" src="javascripts/timer.js"></script>
+</body>
+<footer>This website, excepting content from other sources, is licensed under an <a target="_blank" href="LICENSE">MIT License</a>. Copyright (c) 2020 Marianne Bezaire.</footer>
+</html>

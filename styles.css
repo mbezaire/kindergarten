@@ -1,0 +1,247 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.graybutton {
+float: right;
+box-shadow: 3px 3px 1px lightgray;
+width:100%;
+display: none;
+flex-direction:column;
+justify-content:space-around;
+}
+
+.featurebutton {
+float: left;
+box-shadow: 3px 3px 1px lightgray;
+max-height:30px;
+max-width:30px
+
+}
+
+.announce {
+  border-right:2px solid black; border-left:2px solid black; border-bottom:2px black; border-top:2px solid black;
+  min-height: 100px;
+  min-width: 100px;
+  border-radius: 15px;
+  padding: 10px; 
+    }
+
+.instructionsTable  td{
+  border-right:none; border-left:none; border-bottom:2px black; border-top:2px solid black;
+  border-collapse:collapse;
+  min-height: 400px;
+    }
+    
+.instructionsTable  tr{
+  width:100%;
+  min-height: 400px;
+	    }
+.btnnav .btnadd {
+	border:2px solid blue;
+	height:50%;
+}
+.btnadd {
+	border:2px solid green;
+	height:100%;
+}
+
+.ui-dialog.ui-widget.ui-widget-content {
+		background:lightcoral; /* and no special background for the dialog */
+	}
+	.ui-widget-overlay {
+    background: lightcyan;/* 50% 50% repeat-x*/
+ }
+	.ui-widget-overlay.ui-front { /* you want this */
+		opacity:.75;
+	}
+.ui-dialog-titlebar-close{
+    display: none;
+}
+.btndel {
+	border:2px solid red;
+	height:100%;
+	}    
+.instructionsTable {
+  width:100%;
+  min-height: 400px;
+	    }
+
+
+.frame { /* https://stackoverflow.com/questions/7855590/preventing-scroll-bars-from-being-hidden-for-macos-trackpad-users-in-webkit-blin*/
+    overflow-y: scroll;
+}
+
+.frame::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.frame::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.frame::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.frame::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+	    
+.schedtable {
+  align-items: center;
+  vertical-align:middle;
+  line-height: 2;
+  border-right:none; border-left:none; border-bottom:none; border-top:none;
+  border:none;
+  border-collapse:collapse;
+  width:100%;
+    }
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  max-width: 900px;
+  }
+
+
+.scrollable {
+  min-height: 400px;
+  overflow-y: scroll;
+}
+
+.todo {
+
+  border: 0;
+  color: #FF00FF;
+  background-color: #FF00FF;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  margin-top: 1.5rem;
+}
+
+.left {
+  width: 25%;
+  max-width: 300px;}
+
+.middle {
+  width: 75%;
+  max-width: 900px;
+  }
+  
+.right {
+  width: 25%;
+  max-width: 300px;
+  }
+  
+
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.base-timer {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.base-timer__svg {
+  transform: scaleX(-1);
+}
+
+.base-timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+.base-timer__path-elapsed {
+  stroke-width: 7px;
+  stroke: grey;
+}
+
+.base-timer__path-remaining {
+  stroke-width: 7px;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+  color: rgb(65, 184, 131);
+}
+
+.base-timer__path-remaining.orange {
+  color: orange;
+}
+
+.base-timer__path-remaining.red {
+  color: red;
+}
+
+.base-timer__label {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}  
+  
+    .hytPlayerWrap {
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+    }
+    
+    .hytPlayerWrap.ended::after {
+        content:"";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        cursor: pointer;
+        background-color: black;
+        background-repeat: no-repeat;
+        background-position: center; 
+        background-size: 64px 64px;
+        background-image: url(data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgNTEwIDUxMCI+PHBhdGggZD0iTTI1NSAxMDJWMEwxMjcuNSAxMjcuNSAyNTUgMjU1VjE1M2M4NC4xNSAwIDE1MyA2OC44NSAxNTMgMTUzcy02OC44NSAxNTMtMTUzIDE1My0xNTMtNjguODUtMTUzLTE1M0g1MWMwIDExMi4yIDkxLjggMjA0IDIwNCAyMDRzMjA0LTkxLjggMjA0LTIwNC05MS44LTIwNC0yMDQtMjA0eiIgZmlsbD0iI0ZGRiIvPjwvc3ZnPg==);
+    }
+    .hytPlayerWrap.paused::after {
+        content:"";
+        position: absolute;
+        top: 70px;
+        left: 0;
+        bottom: 50px;
+        right: 0;
+        cursor: pointer;
+        background-color: black;
+        background-repeat: no-repeat;
+        background-position: center; 
+        background-size: 40px 40px;
+        background-image: url(data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHdpZHRoPSIxNzA2LjY2NyIgaGVpZ2h0PSIxNzA2LjY2NyIgdmlld0JveD0iMCAwIDEyODAgMTI4MCI+PHBhdGggZD0iTTE1Ny42MzUgMi45ODRMMTI2MC45NzkgNjQwIDE1Ny42MzUgMTI3Ny4wMTZ6IiBmaWxsPSIjZmZmIi8+PC9zdmc+);
+    }
