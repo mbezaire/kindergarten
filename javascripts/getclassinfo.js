@@ -98,13 +98,12 @@ function loadSubjTable(weekday, subjnum) {
 	if (schedule[weekday][subjnum] == "Morning Meeting") {
 		mmLink = window.mmlinks[weekday];
 		readLink = readlinks[weekday];
-		if (mmLink.length==0 && mmLink.length==0) {
+		if (mmLink.length==0 && readLink.length==0) {
 			taskarray=['<p>Please come back to this section later. The morning meeting materials are not yet ready.</p>']
 		} else {
 			taskarray = makeMeeting(mmLink, readLink)
 		}
 	}
-
 
 	// Mostly Done:	
 	if (schedule[weekday][subjnum] == "Music") {
@@ -133,7 +132,6 @@ function loadSubjTable(weekday, subjnum) {
 		}
 		taskarray = [makeSet(schedule[weekday][subjnum], setTime, setLink)]
 	}
-
 
 	if (taskarray.length == 0) {
 		taskarray = getManual(weekday, schedule[weekday][subjnum])

@@ -1,9 +1,3 @@
-teachername = {
-	"Music": "Your Music teacher",
-	"P.E.": "Your P.E. teacher",
-	"Art": "Your Art teacher"
-}
-
 window.scheduleBase.Monday = ["Morning Meeting", "Poem of the Week", "ELA", "Math", "Science", "Art"]
 window.scheduleBase.Tuesday = ["Morning Meeting", "Poem of the Week", "ELA", "Math", "SEL", "Small Group", "P.E."]
 window.scheduleBase.Wednesday = ["Morning Meeting", "Poem of the Week", "ELA", "Math", "Social Studies", "Website Wednesday", "Music"]
@@ -110,5 +104,3 @@ if (savework === null || lastCheckDate === null || lastCheckDate < window.refres
 	}
 
 }
-
-console.log("Finished loading window.schedule...")

@@ -99,5 +99,10 @@ d3.csv("data/poemvideo.csv").then(function(data) {
 });
 
 function getManual(weekday, subj) {
+	if (typeof window.manual === 'undefined' || window.manual === null || window.manual.hasOwnProperty(weekday)===false || window.manual[weekday].hasOwnProperty(subj)===false  || window.manual[weekday][subj]=== null) {
+		console.log("manual = "+window.manual+" weekday prop: "+window.manual.hasOwnProperty(weekday))
+		return content = [];
+	 } else {
 	return content = window.manual[weekday][subj];
+}
 }

@@ -24,6 +24,20 @@ xhttp.open("GET", "data/getclient.inc.php", false);
 xhttp.send();			
 
 
+var xhttpB = new XMLHttpRequest();
+xhttpB.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+       // Typical action to be performed when the document is ready:
+		var result = JSON.parse(xhttpB.responseText);
+		console.log("Got records ... " + result[0])
+		window.manual = JSON.parse(result[1]);
+		//window.manual = result[1];
+    }
+};
+xhttpB.open("GET", "data/getdata.inc.php", false);
+xhttpB.send();	
+console.log("The subject data is = "+window.manual)		
+
 var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 
@@ -282,7 +296,6 @@ function getClassName() {
 		pageSize: 10
 	}).then(function(response) {
 		var courses = response.result.courses;
-		//appendPre('Courses:');
 
 		if (courses.length > 0) {
 			for (i = 0; i < courses.length; i++) {
@@ -298,10 +311,10 @@ function getClassName() {
 				       // Typical action to be performed when the document is ready:
 				       var result = JSON.parse(xhttp.responseText);
 				       window.settle = result[0].split(";");
-				       window.manual = JSON.parse(result[1]);
+				       //window.manual = JSON.parse(result[1]);
 				    }
 				};
-				xhttp.open("GET", "data/setfoot.inc.php?id="+course.id, true);
+				xhttp.open("GET", "data/setfoot.inc.php?id="+course.id, false);//true);
 				xhttp.send();			
 			}
 			loadWork()
