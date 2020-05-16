@@ -22,6 +22,7 @@ function saveSchedule() {
 		}
 	}
 	localStorage.setItem('classprogress', JSON.stringify(savework));
+	console.log("reached this point")
 	window.close();
 }
 

@@ -7,8 +7,16 @@ function makeVideo(videoURL) {
 	return video = '<iframe src="' + videoURL + '/preview" width="640" height="480" allowfullscreen="true"></iframe>'
 }
 
+function makeVideoDesc(desc,videoURL) {
+	return video = '<p>' + desc + '</p><br/><iframe src="' + videoURL + '/preview" width="640" height="480" allowfullscreen="true"></iframe><br/>'
+}
+
 function makeSlides(slideURL, teacherName) { 
 	return slides = '<p>Follow along with ' + teacherName + ' in the slides below!</p><br/><iframe src="' + slideURL + '/embed?start=false&loop=false&delayms=3000" frameborder="0" width="700px" height="450px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569" -->
+}
+
+function makeWorksheet(desc,docURL) { 
+	return slides = '<p>' + desc + ' <a href="' + docURL + '" target="_blank">Link to worksheet</a></p><br/><iframe src="' + docURL + '/preview" frameborder="0" width="700px" height="910px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569"   height="450px" -->
 }
 
 function makeSet(meetingType, meetingTime, setLink) {
@@ -19,12 +27,20 @@ function makePoem(weekday) {
 	return poem = ['<p style="font-family:Candara, \'Comic Sans MS\';line-height: 1.5;text-align:center;font-size:120%">' + window.poemText + '</p><br/><p>Here is today\'s work for our poem of the week:<br/>' + window.poemInst[weekday] + '</p>', window.poemVideo]
 }
 
+function getMeta(url){   
+    var img = new Image();
+    img.onload = function(){
+        alert( this.width+' '+ this.height );
+    };
+    img.src = url;
+}
+
 function makeMeeting(mmLink, readLink) {
 	idx = 0
 	var video = new Array();
 	video.push("<p>Good morning! ")
 	if (mmLink != "") {
-		video[0] = video[0].concat('Get started with our morning meeting:</p>' + makeVideo(mmLink) + '<br/><p>And next... </p>')
+		video[0] = video[0].concat('Let\'s get started with our morning meeting:</p>' + makeVideo(mmLink) + '<br/>')
 		idx += 1
 		video.push("")
 	}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!--link rel="stylesheet" href="styles.css"-->
+<style type="text/css">
+.row {
+  display: flex; /* equal height of the children */
+}
+
+.col {
+ /*  flex: 1; additionally, equal width */
+  
+  padding: 1em;
+  /* border: solid;*/
+}
+</style>
+	<title>KinderClassRoom</title>
+</head>
+<body><!--style="overflow: hidden;"-->
+	<div class="row">
+	</div>
+</body>
+<footer>This website, excepting content from other sources, is licensed under an <a target="_blank" href="LICENSE">MIT License</a>. Copyright (c) 2020 Marianne Bezaire.</footer>
+<?php
+
+$cont = file_get_contents("http://stackoverflow.com/") or die("1");
+
+$doc = new DOMDocument();
+@$doc->loadHTML($cont) or die("2");
+
+$nodes = $doc->getElementsByTagName("a");
+
+for ($i = 0; $i < $nodes->length; $i++) {
+    $el = $nodes->item($i);
+    if ($el->hasAttribute("href"))
+        echo "- {$el->getAttribute("href")}\n";
+}
+// https://stackoverflow.com/questions/2946634/finding-and-printing-all-links-within-a-div
+// https://stackoverflow.com/questions/18175442/how-to-get-all-the-links-of-a-list-inside-a-div
+// https://stackoverflow.com/questions/8755229/how-to-download-all-files-but-not-html-from-a-website-using-wget
+?>
+
+
+<script >
+
+	window.colorTheme={"sideBar":"#FFFF66", "mainTable":"#87CEFA"};//  tableHolder taskHolder
+
+</script>
+<script>
+    window.onunload = refreshParent;
+    function refreshParent() {
+        window.opener.location.reload();
+    }
+</script>
+</html>
