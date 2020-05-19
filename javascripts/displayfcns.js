@@ -2,6 +2,10 @@ function makeYouTube(videoKey) { // other options after frameborder: <!-- allow=
 	window.chktube = 1
 	return video = '<div  style="position:relative;padding-top: 56.25%;"><div class="hytPlayerWrap"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/' + videoKey + '?rel=0&enablejsapi=1" frameborder="0" allowfullscreen id="currentyoutube"></iframe></div></div>'
 }
+function makeYouTubeDesc(desc, videoKey) { // other options after frameborder: <!-- allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen-->
+	window.chktube = 1
+	return video = '<p>' + desc + '</p><br/><div  style="position:relative;padding-top: 56.25%;"><div class="hytPlayerWrap"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/' + videoKey + '?rel=0&enablejsapi=1" frameborder="0" allowfullscreen id="currentyoutube"></iframe></div></div>'
+}
 
 function makeVideo(videoURL) {
 	return video = '<iframe src="' + videoURL + '/preview" width="640" height="480" allowfullscreen="true"></iframe>'
@@ -13,6 +17,10 @@ function makeVideoDesc(desc,videoURL) {
 
 function makeSlides(slideURL, teacherName) { 
 	return slides = '<p>Follow along with ' + teacherName + ' in the slides below!</p><br/><iframe src="' + slideURL + '/embed?start=false&loop=false&delayms=3000" frameborder="0" width="700px" height="450px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569" -->
+}
+
+function makeSlidesDesc(desc,slideURL) { 
+	return slides = '<p>' + desc + '</p><br/><iframe src="' + slideURL + '/embed?start=false&loop=false&delayms=3000" frameborder="0" width="700px" height="450px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569" -->
 }
 
 function makeWorksheet(desc,docURL) { 

@@ -175,6 +175,18 @@ function Navupdateset() {
 	subjectAdd()
 }
 
+
+function NavloadToday() {
+	var href = window.location.href;
+	var reg = new RegExp( '[?&]day=([^&#]*)', 'i' );
+	var string = reg.exec(href);
+	console.log(string)
+
+	window.currentDaySched = parseInt(string[1], 10); //https://kinderclassroom.org/edit-schedule.html
+	window.history.pushState({}, document.title, "/" + "edit-schedule.html");
+	Navupdateset()
+}
+
 function Navleftset() {
 	if (window.currentDaySched > 0) {
 		window.currentDaySched -= 1;
@@ -198,4 +210,6 @@ $(document).ready(function() {
 	Navupdateset()
 	refreshRows()
 	document.getElementById("SmallTime").value = window.smallGroupMeetingTime;
+
+	NavloadToday();
 });

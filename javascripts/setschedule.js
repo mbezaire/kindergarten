@@ -7,7 +7,7 @@ window.scheduleBase.Friday = ["Morning Meeting", "Poem of the Week", "ELA", "Mat
 localStorage.setItem('scheduleBase', JSON.stringify(window.scheduleBase));
 
 function configure() {
-	window.open('edit-schedule.html', '_blank');
+	window.open('https://kinderclassroom.org/edit-schedule.html?day='+window.currentDay, '_blank');
 }
 
 eachday = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]

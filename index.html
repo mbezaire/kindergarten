@@ -4,6 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="styles.css">
+	<!--script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>	
+	<link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css"-->
 	<title>KinderClassRoom</title>
 </head>
 
@@ -19,8 +21,8 @@
 				<h3 style="text-align:center;max-width: 1000px;" id="classdesc">Location: Outerspace, Planet 3</h3>
 			</div>
 			<div style="width:20%;height:105px;float:left;max-width: 120px; display:flex;flex-direction:column; justify-content:space-around;" id="btnparent">
-				<button id="authorize_button" class="graybutton">Sign In</button>
-				<button id="signout_button" class="graybutton">Sign Out</button>
+				<button id="authorize_button" class="graybutton" style="display: none;">Sign In</button>
+				<button id="signout_button" class="graybutton" style="display: none;">Sign Out</button>
 				<button onclick="gotoClass()" id="gotoClass_button" class="graybutton">Classroom</button>
 				<button onclick="configure()" id="configure_button" class="graybutton">Schedule</button>
 		</div>
@@ -44,7 +46,7 @@
 			</div>
 		</div>
 		<div class="column right">
-			<div  class="row" style="line-height:1;display: none;" id="dispann"><h3 style="text-align:center;vertical-align:middle;width:100%;" >Recent Announcements</h3><br/>
+			<div  class="row" style="line-height:1;display: none;min-width: 400px" id="dispann"><h3 style="text-align:center;vertical-align:middle;width:100%;" >Recent Announcements</h3><br/>
 			</div>
 		</div>
 		<div id="app" class="column right" style="display:none" ></div>
@@ -75,6 +77,9 @@
 		var poemVideo = ''
 		var concatend = {}
 		var manual = {}
+		var currentAnn = []
+		var annName = [];
+		var teacherTitle = "Mrs." // Or "Teacher" ??
 		var updateflag=0
 		if (typeof window.colorTheme == 'undefined') {
 			var colorTheme={"sideBar":"#FFFF00", "mainTable":"#87CEFA"};			
@@ -87,6 +92,12 @@
 		var msgsShow = 1
 		seeMsgs() 
 		document.getElementById("dispann").style.display="none";		
+		
+		function resizeIFrameToFitContent( iFrame ) { // https://stackoverflow.com/questions/819416/adjust-width-and-height-of-iframe-to-fit-with-content-in-it
+
+    iFrame.width  = iFrame.contentWindow.document.body.scrollWidth;
+    iFrame.height = iFrame.contentWindow.document.body.scrollHeight;
+}
 	</script>
 	<script defer type="text/javascript" src="javascripts/googlesignin.js"></script>
 	<script  type="text/javascript"  defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
@@ -96,6 +107,16 @@
 	<script defer src="javascripts/getclassinfo.js"></script>
 	<script defer async type="text/javascript" src="javascripts/youtubecover.js"></script>
 	<script defer async type="text/javascript" src="javascripts/timer.js"></script>
+	<!--script>
+    $(document).ready(function() {
+        // auto refresh page after 1 hour
+        setInterval('refreshPage()', 3600000);
+    });
+ 
+    function refreshPage() { 
+        location.reload(); 
+    }
+</script-->
 </body>
 <footer>This website, excepting content from other sources, is licensed under an <a target="_blank" href="LICENSE">MIT License</a>. Copyright (c) 2020 Marianne Bezaire.</footer>
 </html>

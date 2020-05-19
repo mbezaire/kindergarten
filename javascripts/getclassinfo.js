@@ -107,11 +107,11 @@ function loadSubjTable(weekday, subjnum) {
 
 	// Mostly Done:	
 	if (schedule[weekday][subjnum] == "Music") {
-		taskarray = [makeSlides(window.musicLinks[weekday], window.teachername["Music"])]
+		taskarray = [makeSlides(window.musicLinks[weekday], "your teacher")];//window.teachername["Music"])]
 	}
 
 	if (schedule[weekday][subjnum] == "P.E.") {
-		taskarray = [makeSlides(window.peLinks[weekday], window.teachername["P.E."])]
+		taskarray = [makeSlides(window.peLinks[weekday], "your teacher")];//window.teachername["P.E."])]
 	}
 
 	if (schedule[weekday][subjnum] == "Poem of the Week") {
@@ -119,7 +119,7 @@ function loadSubjTable(weekday, subjnum) {
 	}
 
 	if (schedule[weekday][subjnum] == "Art") {
-		taskarray = [makeSlides(window.artLinks[weekday], window.teachername["Art"])]
+		taskarray = [makeSlides(window.artLinks[weekday], "your teacher")];//window.teachername["Art"])]
 	}
 	
 	if (schedule[weekday][subjnum] == "Small Group" || schedule[weekday][subjnum] == "Class Meeting") {
@@ -178,6 +178,14 @@ function loadSubjTable(weekday, subjnum) {
 	document.getElementById("scrollme").scrollTop = 0;
 
 
+
+var inputs = document.getElementsByTagName('iframe');
+
+for(var i = 0; i < inputs.length; i++) {
+
+//resizeIFrameToFitContent( inputs[i] )
+}
+
 	if (window.chktube == 1) {
 
 		coverUtube()
@@ -215,7 +223,7 @@ var refreshDay = new Date(new Date().setDate(new Date().getDate() - currentDay -
 var currentDate = new Date(baseDay.getTime()); // Revised attempt to get current date
 currentDate.setDate(baseDay.getDate() + currentDay);
 
-var currentAnn = [0, 0]
+
 
 function zerofill(number, length) {
 	var result = number.toString();
@@ -296,21 +304,25 @@ function Annright(ann) {
 
 function Annupdate() {
 	for (ann in announcers) {
+		if (window.currentAnn[ann]!=null) {
 		document.getElementById("anndiv" + ann).class="announce"
 		document.getElementById("anndiv" + ann).innerHTML = window.messages[announcers[ann]][window.currentAnn[ann]]
 
 		if (window.currentAnn[ann] >= (window.messages[window.announcers[ann]].length - 1)) {
-			document.getElementById("Annright" + ann).style = "line-height:2;width:10%;vertical-align:middle;display:none;"
+			document.getElementById("Annright" + ann).style = "line-height:2;width:10%;vertical-align:middle;visibility: hidden;"
 		} else {
 			document.getElementById("Annright" + ann).style = "line-height:2;width:10%;vertical-align:middle;"
 		}
 
 		if (window.currentAnn[ann] < 1) {
-			document.getElementById("Annleft" + ann).style = "line-height:2;width:10%;vertical-align:middle;display:none;"
+			document.getElementById("Annleft" + ann).style = "line-height:2;width:10%;vertical-align:middle;visibility: hidden;"
 		} else {
 			document.getElementById("Annleft" + ann).style = "line-height:2;width:10%;vertical-align:middle;"
 		}
-
+//} else {
+//var elem=document.getElementById("anndiv" + ann);
+//elem.parentNode.removeChild(elem);
+}
 	}
 }
 

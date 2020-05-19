@@ -6,13 +6,14 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/classroom/v1
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.topics.readonly https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.announcements.readonly https://www.googleapis.com/auth/drive.metadata.readonly";
+var SCOPES = "https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.topics.readonly https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.announcements.readonly https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/classroom.rosters.readonly";
 
 
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
        // Typical action to be performed when the document is ready:
+       console.log("Get client ...")
        CLIENT_ID = xhttp.responseText;
        var gapiConfig={
 		clientId: CLIENT_ID,
@@ -20,23 +21,29 @@ xhttp.onreadystatechange = function() {
 		scope: SCOPES};
     }
 };
-xhttp.open("GET", "data/getclient.inc.php", false);
+xhttp.open("GET", "https://kinderclassroom.org/data/getclient.inc.php", false);
 xhttp.send();			
 
 
 var xhttpB = new XMLHttpRequest();
 xhttpB.onreadystatechange = function() {
+	console.log("Here goes nothing: "+this.readyState+", this.status="+this.status)
     if (this.readyState == 4 && this.status == 200) {
        // Typical action to be performed when the document is ready:
 		var result = JSON.parse(xhttpB.responseText);
 		console.log("Got records ... " + result[0])
+		console.log("Waaaa: " + result[1]);
 		window.manual = JSON.parse(result[1]);
+
 		//window.manual = result[1];
-    }
+    } else {
+		var result = xhttpB.responseText;
+		console.log("Otra records ... " + window.manual)
+		    }
 };
-xhttpB.open("GET", "data/getdata.inc.php", false);
+xhttpB.open("GET", "https://kinderclassroom.org/data/getdata.inc.php", false);
 xhttpB.send();	
-console.log("The subject data is = "+window.manual)		
+console.log("The subject data is is is= "+window.manual)		
 
 var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
@@ -49,6 +56,23 @@ var announcements = []
 var announcers = []
 var messages = {}
 
+function getCreatorName(userId) {
+    return gapi.client.classroom.courses.teachers.get({
+      "courseId": "73525520690",
+      "userId": userId //"111907588932606819470"
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                //console.log("Response", response);
+                //console.log(response.result.profile.name.fullName);
+                window.annName[userId] = response.result.profile.name.familyName; //fullName;
+              },
+              function(err) { console.error("Execute error", err); });
+  };
+//  gapi.load("client:auth2", function() {
+//    gapi.auth2.init({client_id: "YOUR_CLIENT_ID"});
+//  });
+  
 function getAnnouncements() {
 	console.log("courseId = " + window.courseId)
 	return gapi.client.classroom.courses.announcements.list({
@@ -69,28 +93,42 @@ function getAnnouncements() {
 				for (ann in announcers) {
 
 					window.messages[announcers[ann]] = []
+					getCreatorName(announcers[ann]);
+					
 				}
+			},
+			function(err) {
+				console.error("Execute error", err);
+			})
+		.then(function() {
+			},
+			function(err) {
+				console.error("Execute error", err);
+			});
+}
 
-				for (msg in window.announcements) {
+function loadAnnounces2() {
+					if (window.annsloaded == 0) {
+					for (msg in window.announcements) {
 
-					var msgdate = new Date(window.announcements[msg].updateTime)
-
-					var chkdate = new Date(new Date().setDate(new Date().getDate() - 7))
-					if (msgdate > chkdate) {
-						if (window.announcements[msg].materials != null && window.announcements[msg].materials.length > 0) {
-							window.messages[window.announcements[msg].creatorUserId].push('<p>' + window.announcements[msg].text + '<br/>(Click below for more details)<br/><a href="' + window.announcements[msg].alternateLink + '" target="_blank">' + dayWeek[msgdate.getDay()] + ", " + months[msgdate.getMonth()] + " " + msgdate.getDate() + '</a></p>')
-						} else {
-							window.messages[window.announcements[msg].creatorUserId].push('<p>' + window.announcements[msg].text + '<br/><a href="' + window.announcements[msg].alternateLink + '" target="_blank">' + dayWeek[msgdate.getDay()] + ", " + months[msgdate.getMonth()] + " " + msgdate.getDate() + '</a></p>')
+						var msgdate = new Date(window.announcements[msg].updateTime)
+	
+						var chkdate = new Date(new Date().setDate(new Date().getDate() - 7))
+						if (msgdate > chkdate) {
+							if (window.announcements[msg].materials != null && window.announcements[msg].materials.length > 0) {
+								window.messages[window.announcements[msg].creatorUserId].push('<b>' + window.teacherTitle + " " + window.annName[window.announcements[msg].creatorUserId] + ':</b><br/><p>' + window.announcements[msg].text + '<br/>(Click below for more details)<br/><a href="' + window.announcements[msg].alternateLink + '" target="_blank">' + dayWeek[msgdate.getDay()] + ", " + months[msgdate.getMonth()] + " " + msgdate.getDate() + '</a></p>')
+							} else {
+								window.messages[window.announcements[msg].creatorUserId].push('<b>' + window.teacherTitle + " " + window.annName[window.announcements[msg].creatorUserId] + ':</b><br/><p>' + window.announcements[msg].text + '<br/><a href="' + window.announcements[msg].alternateLink + '" target="_blank">' + dayWeek[msgdate.getDay()] + ", " + months[msgdate.getMonth()] + " " + msgdate.getDate() + '</a></p>')
+							}
 						}
 					}
-				}
 
-				if (window.annsloaded == 0) {
 
 					document.getElementById("dispann").innerHTML = document.getElementById("dispann").innerHTML.substr(0, document.getElementById("dispann").innerHTML.length - 6)
 
 					for (ann in announcers) {
-						document.getElementById("dispann").innerHTML = document.getElementById("dispann").innerHTML + '<input type="image" id="Annleft' + ann + '" alt="<" src="./Navleft.png" onclick="Annleft(' + ann + ')" style="line-height:2;width:10%;vertical-align:middle;"/><image src="images/Smiley' + ann + '.png"  style="line-height:3;width:15%;vertical-align:bottom;"/><div id="anndiv' + ann + '"  class="announce" style="width:65%;display:inline-block;"></div><input type="image" id="Annright' + ann + '" alt="<" src="./Navright.png" onclick="Annright(' + ann + ')" style="line-height:2;width:10%;vertical-align:middle;"/><br/>'
+						window.currentAnn.push(0)
+						document.getElementById("dispann").innerHTML = document.getElementById("dispann").innerHTML + '<input type="image" id="Annleft' + ann + '" alt="<" src="images/Navleft.png" onclick="Annleft(' + ann + ')" style="line-height:2;width:10%;vertical-align:middle;display:inline-block;"/><image src="images/Smiley' + ann + '.png"  style="line-height:3;width:15%;vertical-align:bottom;display:inline-block;"/><div id="anndiv' + ann + '"  class="announce" style="width:65%;display:inline-block;"></div><input type="image" id="Annright' + ann + '" alt=">" src="images/Navright.png" onclick="Annright(' + ann + ')" style="line-height:2;width:10%;vertical-align:middle;display:inline-block;"/><br/>'
 					}
 
 					document.getElementById("dispann").innerHTML = document.getElementById("dispann").innerHTML + '</div>'
@@ -98,10 +136,7 @@ function getAnnouncements() {
 					window.annsloaded = 1
 					Annupdate()
 				}
-			},
-			function(err) {
-				console.error("Execute error", err);
-			});
+
 }
 
 function getCourseWork() {
@@ -134,10 +169,11 @@ function getCourseWork() {
 						for (k=0; k<window.coursework[i].materials.length; k++) {
 							chkmat = 0
 							if (window.coursework[i].materials[k].hasOwnProperty("driveFile")) {
-								if (window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)!=".mp4") {
-								window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'"></a>'])
+								if (window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)!=".mp4" && window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)!="webm") {
+									window.assignment[taskday][subj].push(makeWorksheet(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"],"https://drive.google.com/file/d/"+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].substring(1+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].indexOf("="))))
+									//window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'"></a>'])
 								} else {
-								window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'" style="width:100%"></a>'])
+									window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'" style="width:100%"></a>'])
 								}
 								chkmat+=1
 							}
@@ -146,7 +182,8 @@ function getCourseWork() {
 								chkmat+=1
 							}
 							if (window.coursework[i].materials[k].hasOwnProperty("link")) {
-								window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["link"]["url"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["link"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["link"]["title"]+'" /></a>'])
+								window.assignment[taskday][subj].push(makeWorksheet(window.coursework[i].materials[k]["link"]["title"],window.coursework[i].materials[k]["link"]["url"]))
+								//window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["link"]["url"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["link"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["link"]["title"]+'" /></a>'])
 								chkmat+=1
   							}
 							if (window.coursework[i].materials[k].hasOwnProperty("form")) { 
@@ -210,7 +247,7 @@ function getSchoolDays() {
 }
 
 function loadWork() {
-	//getCourseWork()
+	getCourseWork()
 	getAnnouncements()
 }
 

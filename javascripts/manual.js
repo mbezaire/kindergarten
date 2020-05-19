@@ -27,6 +27,10 @@ d3.csv("data/concat.csv").then(function(data) {
 				task2add = makeVideoDesc(data[d].Desc,data[d].Link)
 			} else if (data[d].Action == "makeWorksheet") {
 				task2add = makeWorksheet(data[d].Desc,data[d].Link)
+			} else if (data[d].Action == "makeSlidesDesc") {
+				task2add = makeSlidesDesc(data[d].Desc,data[d].Link)
+			} else if (data[d].Action == "makeYouTubeDesc") {
+				task2add = makeYouTubeDesc(data[d].Desc,data[d].Link)
 			} else if (data[d].Action == "makeSlides") {
 				task2add = makeSlides(data[d].Link, "the teacher")
 			} else {

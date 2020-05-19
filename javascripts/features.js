@@ -1,6 +1,7 @@
 
 function seeMsgs() {
 if (window.msgsShow==0) {
+	loadAnnounces2();
 	window.msgsShow=1;
 	document.getElementById("dispann").style.display="inline-block";
 } else {
@@ -11,9 +12,9 @@ if (window.msgsShow==0) {
 
 function setTheme() {
 	console.log("setTheme")
-	window.open('setTheme.html', '_blank');
+	window.open('https://kinderclassroom.org/setTheme.html', '_blank');
 }
 
 function getHelp() {
-	window.open('help.html', '_blank');
+	window.open('https://kinderclassroom.org/help.html', '_blank');
 }
