@@ -3,6 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
+	<!--meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com"-->
 	<link rel="stylesheet" href="styles.css">
 	<!--script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>	
 	<link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css"-->
@@ -11,10 +12,10 @@
 
 <body>
 	<div class="row">
-			<div style="width:20%;float: left;max-width: 40px;height:105px; display:flex;flex-direction:column; justify-content:space-around;">
-				<input onclick="seeMsgs()" type="image" src="images/msg.png" alt="Ann.s" class="featurebutton"/><br/>			
-				<input onclick="setTheme()" type="image" src="images/gear.png" alt="Set" class="featurebutton" style="display:none;"/><br/>		
-				<input onclick="getHelp()" type="image" src="images/help.png" alt=" ? " class="featurebutton"/><br/>		
+			<div style="width:20%;float: left;max-width: 40px;height:105px; ">
+				<div onclick="seeMsgs()" class="featurebutton" -webkit-appearance: none;><img src="images/msg.png" alt="Ann.s" style="text-align:center" width="30px" height="30px"></div><br/>			
+				<div onclick="setTheme()" class="featurebutton" style="visibility:hidden;"><img src="images/gear.png"  alt="Set" style="text-align:center" width="30px" height="30px"></div><br/>		
+				<div onclick="getHelp()" class="featurebutton"  -webkit-appearance: none;><img src="images/help.png" alt=" ? " style="text-align:center" width="30px" height="30px"></div><br/>		
 			</div>
 			<div style="width:80%;float: left;max-width: 1040px;">
 				<h2 style='text-align:center;max-width: 1000px;' id="classname">Ms. Frizzle's Kindergarten</h2>
@@ -54,6 +55,7 @@
 	<!--Add buttons to initiate auth sequence and sign out-->
 	
 	<script type="text/javascript" src="javascripts/features.js"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<script src="https://d3js.org/d3-dsv.v1.min.js"></script>
 	<script src="https://d3js.org/d3-fetch.v1.min.js"></script>
 	<script type="text/javascript">
@@ -98,13 +100,15 @@
     iFrame.width  = iFrame.contentWindow.document.body.scrollWidth;
     iFrame.height = iFrame.contentWindow.document.body.scrollHeight;
 }
+        var versionUpdate = (new Date()).getTime();  
+
 	</script>
-	<script defer type="text/javascript" src="javascripts/googlesignin.js"></script>
+	<script defer type="text/javascript" src="javascripts/googlesignin.js?v=" + versionUpdate></script>
 	<script  type="text/javascript"  defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
 	<script defer src="javascripts/displayfcns.js"></script>
-	<script defer src="javascripts/manual.js"></script>
+	<script defer src="javascripts/manual.js?v=" + versionUpdate></script>
 	<script defer src="javascripts/setschedule.js"></script>
-	<script defer src="javascripts/getclassinfo.js"></script>
+	<script defer src="javascripts/getclassinfo.js?v=" + versionUpdate></script>
 	<script defer async type="text/javascript" src="javascripts/youtubecover.js"></script>
 	<script defer async type="text/javascript" src="javascripts/timer.js"></script>
 	<!--script>

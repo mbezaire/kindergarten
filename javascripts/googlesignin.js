@@ -25,25 +25,6 @@ xhttp.open("GET", "https://kinderclassroom.org/data/getclient.inc.php", false);
 xhttp.send();			
 
 
-var xhttpB = new XMLHttpRequest();
-xhttpB.onreadystatechange = function() {
-	console.log("Here goes nothing: "+this.readyState+", this.status="+this.status)
-    if (this.readyState == 4 && this.status == 200) {
-       // Typical action to be performed when the document is ready:
-		var result = JSON.parse(xhttpB.responseText);
-		console.log("Got records ... " + result[0])
-		console.log("Waaaa: " + result[1]);
-		window.manual = JSON.parse(result[1]);
-
-		//window.manual = result[1];
-    } else {
-		var result = xhttpB.responseText;
-		console.log("Otra records ... " + window.manual)
-		    }
-};
-xhttpB.open("GET", "https://kinderclassroom.org/data/getdata.inc.php", false);
-xhttpB.send();	
-console.log("The subject data is is is= "+window.manual)		
 
 var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
@@ -83,18 +64,34 @@ function getAnnouncements() {
 
 				window.announcements = response.result.announcements
 				creators = []
-
+				msg2rm=[];
 				for (i = 0; i < window.announcements.length; i++) {
-					creators.push(window.announcements[i].creatorUserId)
+
+
+						var msgdate = new Date(window.announcements[i].updateTime)
+	
+						var chkdate = new Date(new Date().setDate(new Date().getDate() - 7))
+						if (msgdate > chkdate) {
+							creators.push(window.announcements[i].creatorUserId)
+						} else {
+							msg2rm.push(i)
+						}
 				}
+
+					
+
+					/*for (var i = msg2rm.length - 1; i >= 0; i--) {
+						console.log("About to remove: "+window.announcements[i])
+						window.announcements = window.announcements.slice(0,i).concat(window.announcements.slice(i+1))
+					}*/
+
 				window.announcers = creators.filter((item, i, ar) => ar.indexOf(item) === i);
 
 
 				for (ann in announcers) {
 
 					window.messages[announcers[ann]] = []
-					getCreatorName(announcers[ann]);
-					
+					getCreatorName(announcers[ann]);	
 				}
 			},
 			function(err) {
@@ -109,6 +106,7 @@ function getAnnouncements() {
 
 function loadAnnounces2() {
 					if (window.annsloaded == 0) {
+
 					for (msg in window.announcements) {
 
 						var msgdate = new Date(window.announcements[msg].updateTime)
@@ -120,8 +118,9 @@ function loadAnnounces2() {
 							} else {
 								window.messages[window.announcements[msg].creatorUserId].push('<b>' + window.teacherTitle + " " + window.annName[window.announcements[msg].creatorUserId] + ':</b><br/><p>' + window.announcements[msg].text + '<br/><a href="' + window.announcements[msg].alternateLink + '" target="_blank">' + dayWeek[msgdate.getDay()] + ", " + months[msgdate.getMonth()] + " " + msgdate.getDate() + '</a></p>')
 							}
-						}
+						} 
 					}
+
 
 
 					document.getElementById("dispann").innerHTML = document.getElementById("dispann").innerHTML.substr(0, document.getElementById("dispann").innerHTML.length - 6)
@@ -165,16 +164,26 @@ function getCourseWork() {
 								}
 							}
 						}
-						window.assignment[taskday][subj] = ['<h4><a href="'+window.coursework[i].alternateLink+'" target="_blank">'+window.coursework[i].title+'</a></h4><br/><p>'+window.coursework[i].description+'</p>']
+						taskURL = window.coursework[i].alternateLink;
+						window.assignment[taskday][subj] = ['<h4><a href="'+taskURL+'" target="_blank">'+window.coursework[i].title+'</a></h4><br/><p>'+window.coursework[i].description+'</p>']
 						for (k=0; k<window.coursework[i].materials.length; k++) {
 							chkmat = 0
 							if (window.coursework[i].materials[k].hasOwnProperty("driveFile")) {
-								if (window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)!=".mp4" && window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)!="webm") {
-									window.assignment[taskday][subj].push(makeWorksheet(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"],"https://drive.google.com/file/d/"+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].substring(1+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].indexOf("="))))
-									//window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'"></a>'])
+								if(window.coursework[i].materials[k]["driveFile"]["shareMode"]=="STUDENT_COPY") {
+										window.assignment[taskday][subj].push(makeWorkPreview("Here is a preview of the assignment file " + window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"] + ". To access your personal copy for working on and turning in, click here and look in the upper right corner of the window:",taskURL,"https://drive.google.com/file/d/"+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].substring(1+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].indexOf("="))))								
+										//window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'"></a>'])
 								} else {
-									window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'" style="width:100%"></a>'])
+									if (window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)==".ppt") {
+										//window.assignment[taskday][subj].push(makeWorksheet(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"],"https://docs.google.com/presentation/d/"+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].substring(1+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].indexOf("="))+"/edit#slide=id.p"))
+										window.assignment[taskday][subj].push(makePPT(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"],window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]))
+									} else if (window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)!=".mp4" && window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].substring(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length-4,window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"].length)!="webm") {
+										window.assignment[taskday][subj].push(makeWorksheet(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"],"https://drive.google.com/file/d/"+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].substring(1+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].indexOf("="))))
+										//window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'"></a>'])
+									} else {
+										window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"]+'" style="width:100%"></a>'])
+									}								
 								}
+								
 								chkmat+=1
 							}
 							if (window.coursework[i].materials[k].hasOwnProperty("youtubeVideo")) {
@@ -182,8 +191,13 @@ function getCourseWork() {
 								chkmat+=1
 							}
 							if (window.coursework[i].materials[k].hasOwnProperty("link")) {
+								if (window.coursework[i].materials[k]["link"]["title"].substring(window.coursework[i].materials[k]["link"]["title"].length-20,window.coursework[i].materials[k]["link"]["title"].length)==".ppt - Google Slides") {
+									//window.assignment[taskday][subj].push(makeWorksheet(window.coursework[i].materials[k]["driveFile"]["driveFile"]["title"],"https://docs.google.com/presentation/d/"+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].substring(1+window.coursework[i].materials[k]["driveFile"]["driveFile"]["alternateLink"].indexOf("="))+"/edit#slide=id.p"))
+									window.assignment[taskday][subj].push(makePPT(window.coursework[i].materials[k]["link"]["title"],window.coursework[i].materials[k]["link"]["thumbnailUrl"],window.coursework[i].materials[k]["link"]["url"]))
+								} else {
 								window.assignment[taskday][subj].push(makeWorksheet(window.coursework[i].materials[k]["link"]["title"],window.coursework[i].materials[k]["link"]["url"]))
 								//window.assignment[taskday][subj].push(['<br/><a href="'+window.coursework[i].materials[k]["link"]["url"]+'" target="_blank"><img src="'+window.coursework[i].materials[k]["link"]["thumbnailUrl"]+'" alt="'+window.coursework[i].materials[k]["link"]["title"]+'" /></a>'])
+								}								
 								chkmat+=1
   							}
 							if (window.coursework[i].materials[k].hasOwnProperty("form")) { 
@@ -352,7 +366,27 @@ function getClassName() {
 				    }
 				};
 				xhttp.open("GET", "data/setfoot.inc.php?id="+course.id, false);//true);
-				xhttp.send();			
+				xhttp.send();	
+				
+				var xhttpB = new XMLHttpRequest();
+				xhttpB.onreadystatechange = function() {
+					//console.log("Here goes nothing: "+this.readyState+", this.status="+this.status)
+				    if (this.readyState == 4 && this.status == 200) {
+				       // Typical action to be performed when the document is ready:
+						var result = JSON.parse(xhttpB.responseText);
+						//console.log("Got records ... " + result[0])
+						//console.log("Waaaa: " + result[1]);
+						window.manual = JSON.parse(result[1]);
+				
+						//window.manual = result[1];
+				    } else {
+						var result = xhttpB.responseText;
+						//console.log("Otra records ... " + window.manual)
+					}
+				};
+				xhttpB.open("GET", "https://kinderclassroom.org/data/getdata.inc.php?id="+course.id, false);
+				xhttpB.send();	
+				//console.log("The subject data is = "+window.manual)						
 			}
 			loadWork()
 		} else {

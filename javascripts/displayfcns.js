@@ -23,6 +23,16 @@ function makeSlidesDesc(desc,slideURL) {
 	return slides = '<p>' + desc + '</p><br/><iframe src="' + slideURL + '/embed?start=false&loop=false&delayms=3000" frameborder="0" width="700px" height="450px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569" -->
 }
 
+function makePPT(desc,picURL,slideURL) { 
+	return slides = '<p><a href="' + slideURL + '" target="_blank">' + desc + '</p><br/><img src="' + picURL + '"/></a>'
+	//return slides = '<p><a href="' + slideURL + '" target="_blank">' + desc + '</a></p><br/><iframe src="' + slideURL + '" frameborder="0" width="700px" height="450px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569" -->
+}
+
+makeWorkPreview
+
+function makeWorkPreview(desc,workURL,docURL) { 
+	return slides = '<p>' + desc + ' <a href="' + workURL + '" target="_blank">Link to work task</a></p><br/><iframe src="' + docURL + '/preview" frameborder="0" width="700px" height="910px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569"   height="450px" -->
+}
 function makeWorksheet(desc,docURL) { 
 	return slides = '<p>' + desc + ' <a href="' + docURL + '" target="_blank">Link to worksheet</a></p><br/><iframe src="' + docURL + '/preview" frameborder="0" width="700px" height="910px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>' // <!-- width="960" height="569"   height="450px" -->
 }

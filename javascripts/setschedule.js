@@ -21,8 +21,14 @@ if (window.customschedule === null) {
 	for (var d in eachday) {
 		window.customschedule[eachday[d]] = [...scheduleBase[eachday[d]]];
 		i = window.customschedule[eachday[d]].indexOf("ELA")
+		if (eachday[d]==="Thursday") {
+			// Add recess
+			window.customschedule[eachday[d]] = window.customschedule[eachday[d]].slice(0, i + 4).concat("Recess", window.customschedule[eachday[d]].slice(i + 4))
+
+		} else {
 			// Add lunch & recess
-		window.customschedule[eachday[d]] = window.customschedule[eachday[d]].slice(0, i + 3).concat("Lunch", "Recess", window.customschedule[eachday[d]].slice(i + 3))
+			window.customschedule[eachday[d]] = window.customschedule[eachday[d]].slice(0, i + 3).concat("Lunch", "Recess", window.customschedule[eachday[d]].slice(i + 3))
+		}
 			// Add snack
 		window.customschedule[eachday[d]] = window.customschedule[eachday[d]].slice(0, i + 1).concat("Snack", window.customschedule[eachday[d]].slice(i + 1))
 	}

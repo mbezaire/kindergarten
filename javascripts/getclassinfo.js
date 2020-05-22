@@ -84,8 +84,8 @@ var chktube = 0
 
 
 function loadSubjTable(weekday, subjnum) {
-	preface1 = '<tr style="width:100%;height:100%"><td style="width:10%"><input type="image" ';
-	preface2 = ' alt="[_]" src="./Todo.png"  done="0"/></td><td style="width:90%">';
+	preface1 = '<tr style="width:100%;height:100%;"><td style="width:10%"><input type="image" ';
+	preface2 = ' alt="[_]" src="./Todo.png"  done="0" style="user-drag: none;-webkit-user-drag: none;cursor:pointer" /></td><td style="width:90%">';
 	closing = '</td></tr>'
 
 	if (window.chktube == 1) {
@@ -132,12 +132,17 @@ function loadSubjTable(weekday, subjnum) {
 		}
 		taskarray = [makeSet(schedule[weekday][subjnum], setTime, setLink)]
 	}
+	
+	if (schedule[weekday][subjnum].indexOf("Tass")>-1) {
+		taskarray = ['<p>At the time for your meeting with Mrs. Tassinari, <a href="' + window.settle[2] + '" target="_blank">click here to join the Google Meet</a>.<br/><br/>Forgot your meeting time? <a href="' + window.settle[3] + '" target="_blank">Check the SignUpGenius schedule here.</a></p>'];
+	}
+
 
 	if (taskarray.length == 0) {
 		taskarray = getManual(weekday, schedule[weekday][subjnum])
 	}
 
-	if (window.assignment[weekday].hasOwnProperty(schedule[weekday][subjnum]) && window.assignment[weekday][schedule[weekday][subjnum]].length>0) {
+	if (taskarray.length == 0 && window.assignment[weekday].hasOwnProperty(schedule[weekday][subjnum]) && window.assignment[weekday][schedule[weekday][subjnum]].length>0) {
 		taskarray=taskarray.concat(window.assignment[weekday][schedule[weekday][subjnum]])
 	}
 	
@@ -164,7 +169,7 @@ function loadSubjTable(weekday, subjnum) {
 
 		}
 
-		if (weekday != "Monday" && schedule[weekday][subjnum] == "Poem of the Week" && i > 0) {
+		if (weekday != "Monday" && schedule[weekday][subjnum] == "Poem of the Week" && i == 1) {
 			tasktable += preface1 + 'id="tasktodo_' + i + '" onclick="ToggleDone(\'tasktodo_' + i + '\',' + i + ',\'' + weekday + '\',' + subjnum + ')"  ' + ' alt="[_]" src="images/Done.png"  done="1"/></td><td style="width:90%">' + taskarray[i] + closing
 			savework[weekday][schedule[weekday][subjnum]][taskarray.length - 1] = 1
 		} else {
@@ -264,7 +269,7 @@ function Navupdate() {
 
 	myinner = ""
 	for (i = 0; i < window.schedule[dayWeek[window.currentDate.getDay()]].length; i++) {
-		myinner = myinner + "<tr style='height:100%;' id='row_" + zerofill(i, 2) + "'  onclick='SelectSubject(\"row_" + zerofill(i, 2) + "\",\"sched_" + window.schedule[dayWeek[window.currentDate.getDay()]][i].substring(0, 3) + "\"," + i + ")'><td style='height:100%;text-align:right;'><img src='images/Todo.png' alt='[_]' style='height:40%;' id='sched_" + window.schedule[dayWeek[window.currentDate.getDay()]][i].substring(0, 3) + "'></td><td>" + window.schedule[dayWeek[window.currentDate.getDay()]][i] + "</td></tr>"
+		myinner = myinner + "<tr style='height:100%;cursor:pointer;' id='row_" + zerofill(i, 2) + "'  onclick='SelectSubject(\"row_" + zerofill(i, 2) + "\",\"sched_" + window.schedule[dayWeek[window.currentDate.getDay()]][i].substring(0, 3) + "\"," + i + ")'><td style='height:100%;text-align:right;cursor:pointer;'><img src='images/Todo.png' alt='[_]' style='height:40%;user-drag: none;-webkit-user-drag: none;cursor:pointer;' id='sched_" + window.schedule[dayWeek[window.currentDate.getDay()]][i].substring(0, 3) + "'></td><td style='cursor:pointer;'>" + window.schedule[dayWeek[window.currentDate.getDay()]][i] + "</td></tr>"
 	}
 	myinner = myinner + "</td></tr>";
 
