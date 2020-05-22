@@ -7,7 +7,11 @@ window.scheduleBase.Friday = ["Morning Meeting", "Poem of the Week", "ELA", "Mat
 localStorage.setItem('scheduleBase', JSON.stringify(window.scheduleBase));
 
 function configure() {
-	window.open('https://kinderclassroom.org/edit-schedule.html?day='+window.currentDay, '_blank');
+	if (typeof window.helpLinkSign === 'undefined' || window.helpLinkSign === null) {
+	window.open('https://kinderclassroom.org/edit-schedule.html?day='+window.currentDay+'&helpteach=Ms.Frizzle', '_blank');
+	} else {
+	window.open('https://kinderclassroom.org/edit-schedule.html?day='+window.currentDay+'&helpteach='+encodeURIComponent(window.helpLinkSign[0]), '_blank');
+}
 }
 
 eachday = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]

@@ -55,7 +55,7 @@ function SelectExtra(rowId, indicatorId, subjnum) {
 		row.style = 'height:100%;'
 	}
 	for (const row of document.getElementById("tableExtra").rows) {
-		row.style = 'height:100%;'
+		row.style = 'height:100%;user-drag: none;-webkit-user-drag: none;cursor:pointer'
 	}
 
 	// set this one to orange background
@@ -71,7 +71,7 @@ function SelectSubject(rowId, indicatorId, subjnum) {
 		row.style = 'height:100%;'
 	}
 	for (const row of document.getElementById("tableExtra").rows) {
-		row.style = 'height:100%;'
+		row.style = 'height:100%;user-drag: none;-webkit-user-drag: none;cursor:pointer'
 	}
 
 	// set this one to orange background
@@ -81,6 +81,11 @@ function SelectSubject(rowId, indicatorId, subjnum) {
 }
 
 var chktube = 0
+
+
+function makePoem(weekday) {
+	return poem = ['<p style="font-family:Candara, \'Comic Sans MS\';line-height: 1.5;text-align:center;font-size:120%">' + window.poemText + '</p><br/><p>Here is today\'s work for our poem of the week:<br/>' + window.poemInst[weekday] + '</p>']
+}
 
 
 function loadSubjTable(weekday, subjnum) {
@@ -95,31 +100,9 @@ function loadSubjTable(weekday, subjnum) {
 
 	taskarray = [];
 
-	if (schedule[weekday][subjnum] == "Morning Meeting") {
-		mmLink = window.mmlinks[weekday];
-		readLink = readlinks[weekday];
-		if (mmLink.length==0 && readLink.length==0) {
-			taskarray=['<p>Please come back to this section later. The morning meeting materials are not yet ready.</p>']
-		} else {
-			taskarray = makeMeeting(mmLink, readLink)
-		}
-	}
-
-	// Mostly Done:	
-	if (schedule[weekday][subjnum] == "Music") {
-		taskarray = [makeSlides(window.musicLinks[weekday], "your teacher")];//window.teachername["Music"])]
-	}
-
-	if (schedule[weekday][subjnum] == "P.E.") {
-		taskarray = [makeSlides(window.peLinks[weekday], "your teacher")];//window.teachername["P.E."])]
-	}
-
 	if (schedule[weekday][subjnum] == "Poem of the Week") {
 		taskarray = makePoem(weekday)
-	}
-
-	if (schedule[weekday][subjnum] == "Art") {
-		taskarray = [makeSlides(window.artLinks[weekday], "your teacher")];//window.teachername["Art"])]
+		taskarray=taskarray.concat(getManual(weekday, schedule[weekday][subjnum]))
 	}
 	
 	if (schedule[weekday][subjnum] == "Small Group" || schedule[weekday][subjnum] == "Class Meeting") {
@@ -134,7 +117,7 @@ function loadSubjTable(weekday, subjnum) {
 	}
 	
 	if (schedule[weekday][subjnum].indexOf("Tass")>-1) {
-		taskarray = ['<p>At the time for your meeting with Mrs. Tassinari, <a href="' + window.settle[2] + '" target="_blank">click here to join the Google Meet</a>.<br/><br/>Forgot your meeting time? <a href="' + window.settle[3] + '" target="_blank">Check the SignUpGenius schedule here.</a></p>'];
+		taskarray = ['<p>At the time for your meeting with ' + window.helpLinkSign[0] + ', <a href="' + window.helpLinkSign[1] + '" target="_blank">click here to join the Google Meet</a>.<br/><br/>Forgot your meeting time? <a href="' + window.helpLinkSign[2] + '" target="_blank">Check the SignUpGenius schedule here.</a></p>'];
 	}
 
 
@@ -203,7 +186,7 @@ function loadExtraTable(extraType) {
 	if (extraType == "Leftover Work") {
 		document.getElementById("instructionsTable").innerHTML = '<p>Mom is still working on this one! :)</p>'
 	} else {
-		document.getElementById("instructionsTable").innerHTML = '<a href="https://classroom.google.com/u/1/w/NzM1MjU1MjA2OTBa/tc/NzQ1MTEwNjcxNjJa" target="_blank">Click here to check out all the Fun-Dos!</a>'
+		document.getElementById("instructionsTable").innerHTML = '<a href="' + window.settle[2] + '?authuser=' + window.email + '" target="_blank">Click here to check out all the Fun-Dos!</a>'
 	}
 }
 
@@ -310,24 +293,21 @@ function Annright(ann) {
 function Annupdate() {
 	for (ann in announcers) {
 		if (window.currentAnn[ann]!=null) {
-		document.getElementById("anndiv" + ann).class="announce"
-		document.getElementById("anndiv" + ann).innerHTML = window.messages[announcers[ann]][window.currentAnn[ann]]
-
-		if (window.currentAnn[ann] >= (window.messages[window.announcers[ann]].length - 1)) {
-			document.getElementById("Annright" + ann).style = "line-height:2;width:10%;vertical-align:middle;visibility: hidden;"
-		} else {
-			document.getElementById("Annright" + ann).style = "line-height:2;width:10%;vertical-align:middle;"
+			document.getElementById("anndiv" + ann).class="announce"
+			document.getElementById("anndiv" + ann).innerHTML = window.messages[announcers[ann]][window.currentAnn[ann]]
+	
+			if (window.currentAnn[ann] >= (window.messages[window.announcers[ann]].length - 1)) {
+				document.getElementById("Annright" + ann).style = "line-height:2;width:10%;vertical-align:middle;visibility: hidden;"
+			} else {
+				document.getElementById("Annright" + ann).style = "line-height:2;width:10%;vertical-align:middle;"
+			}
+	
+			if (window.currentAnn[ann] < 1) {
+				document.getElementById("Annleft" + ann).style = "line-height:2;width:10%;vertical-align:middle;visibility: hidden;"
+			} else {
+				document.getElementById("Annleft" + ann).style = "line-height:2;width:10%;vertical-align:middle;"
+			}
 		}
-
-		if (window.currentAnn[ann] < 1) {
-			document.getElementById("Annleft" + ann).style = "line-height:2;width:10%;vertical-align:middle;visibility: hidden;"
-		} else {
-			document.getElementById("Annleft" + ann).style = "line-height:2;width:10%;vertical-align:middle;"
-		}
-//} else {
-//var elem=document.getElementById("anndiv" + ann);
-//elem.parentNode.removeChild(elem);
-}
 	}
 }
 

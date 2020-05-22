@@ -37,7 +37,7 @@
 			<table class='schedtable' id='tableSubjects'>
 			<hr/>
 			<table class='schedtable' id='tableExtra'>
-				<tr style='height:100%' id='exrow_01'  onclick='SelectExtra("exrow_01","exrow_01",1)'><td style='height:100%;text-align:right;'><img src='images/Todo.png' alt='[_]' style='height:40%;' ></td><td>Fun-Dos</td></tr>
+				<tr style='height:100%;user-drag: none;-webkit-user-drag: none;cursor:pointer' id='exrow_01'  onclick='SelectExtra("exrow_01","exrow_01",1)'><td style='height:100%;text-align:right;'><img src='images/Todo.png' alt='[_]' style='height:40%;' ></td><td>Fun-Dos</td></tr>
 			</table>
 		</div>
 		<div class="column middle" style="background-color:#87CEFA;" id="taskHolder">
@@ -83,6 +83,11 @@
 		var annName = [];
 		var teacherTitle = "Mrs." // Or "Teacher" ??
 		var updateflag=0
+		if (typeof window.fname == 'undefined') {
+			var fname = ""
+	  		var email = ""
+  		}
+
 		if (typeof window.colorTheme == 'undefined') {
 			var colorTheme={"sideBar":"#FFFF00", "mainTable":"#87CEFA"};			
 		}
@@ -103,9 +108,9 @@
         var versionUpdate = (new Date()).getTime();  
 
 	</script>
+	<script src="javascripts/displayfcns.js"></script>
 	<script defer type="text/javascript" src="javascripts/googlesignin.js?v=" + versionUpdate></script>
 	<script  type="text/javascript"  defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
-	<script defer src="javascripts/displayfcns.js"></script>
 	<script defer src="javascripts/manual.js?v=" + versionUpdate></script>
 	<script defer src="javascripts/setschedule.js"></script>
 	<script defer src="javascripts/getclassinfo.js?v=" + versionUpdate></script>

@@ -1,19 +1,3 @@
-window.mmlinks = {"Monday": "", "Tuesday":"", "Wednesday": "", "Thursday": "", "Friday": ""};
-window.readlinks = {"Monday": "", "Tuesday":"", "Wednesday": "", "Thursday": "", "Friday": ""};
-
-
-d3.csv("data/morning.csv").then(function(data) {
-	for (d = 0; d < data.length; d++) {
-		if (data[d].Day.length > 0) {
-			if (data[d].Type =="Morning Meeting") {
-			window.mmlinks[data[d].Day] = data[d].Link;
-		} else {
-			window.readlinks[data[d].Day] = data[d].Link;
-		}
-		}
-	}
-});
-
 d3.csv("data/concat.csv").then(function(data) {
 	for (d = 0; d < data.length; d++) {
 		if (data[d].Day.length > 0 && data[d].Subject.length > 0) {
@@ -48,32 +32,6 @@ d3.csv("data/concat.csv").then(function(data) {
 		}
 	}
 });
-window.artLinks = {};
-window.musicLinks = {};
-window.peLinks = {};
-d3.csv("data/art.csv").then(function(data) {
-	for (d = 0; d < data.length; d++) {
-		if (data[d].Day.length > 0) {
-			window.artLinks[data[d].Day] = data[d].Link;
-		}
-	}
-});
-
-d3.csv("data/music.csv").then(function(data) {
-	for (d = 0; d < data.length; d++) {
-		if (data[d].Day.length > 0) {
-			window.musicLinks[data[d].Day] = data[d].Link;
-		}
-	}
-});
-
-d3.csv("data/pe.csv").then(function(data) {
-	for (d = 0; d < data.length; d++) {
-		if (data[d].Day.length > 0) {
-			window.peLinks[data[d].Day] = data[d].Link;
-		}
-	}
-});
 
 
 d3.csv("data/poem.csv").then(function(data) {
@@ -86,25 +44,6 @@ d3.csv("data/poem.csv").then(function(data) {
 	}
 });
 
-
-d3.csv("data/poemvideo.csv").then(function(data) {
-	for (d = 0; d < data.length; d++) {
-		if (data[d].Link.length > 0) {
-			var poemURL = data[d].Link
-			if (data[d].Action == "makeYouTube") {
-				window.poemVideo = makeYouTube(data[d].Link)
-			} else if (data[d].Action == "HTML") {
-				window.poemVideo = data[d].Link
-			} else if (data[d].Action == "makeVideo") {
-				window.poemVideo = makeVideo(data[d].Link)
-			} else if (data[d].Action == "makeSlides") {
-				window.poemVideo = makeSlides(data[d].Link, "the teacher")
-			} else {
-				window.poemVideo = [data[d].Link]
-			}
-		}
-	}
-});
 
 function getManual(weekday, subj) {
 	if (typeof window.manual === 'undefined' || window.manual === null || window.manual.hasOwnProperty(weekday)===false || window.manual[weekday].hasOwnProperty(subj)===false  || window.manual[weekday][subj]=== null) {

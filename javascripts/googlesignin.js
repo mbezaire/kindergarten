@@ -296,7 +296,7 @@ function loadAndInitGAPI() { //initClient() {
 		gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
 		// Handle the initial sign-in state.
-		updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+		updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get(),gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
 		authorizeButton.onclick = handleAuthClick;
 		signoutButton.onclick = handleSignoutClick;		
 		
@@ -307,12 +307,14 @@ function loadAndInitGAPI() { //initClient() {
 	//setTimeout(gapi.client.init(gapiConfig), 1);
 }
 
-function updateSigninStatus(isSignedIn) {
+function updateSigninStatus(isSignedIn,profile) {
 	console.log("isSignedIn = ", isSignedIn)
 	if (isSignedIn) {
 		authorizeButton.style.display = 'none';
 		signoutButton.style.display =  'block';
 		getClassName(); //getClassName(); //list.topics();
+  window.fname = profile.getGivenName();
+  window.email = profile.getEmail();
 
 	} else {
 		authorizeButton.style.display =  'block';
@@ -324,7 +326,13 @@ function updateSigninStatus(isSignedIn) {
  *  Sign in the user upon button click.
  */
 function handleAuthClick(event) {
-	gapi.auth2.getAuthInstance().signIn();
+	gapi.auth2.getAuthInstance().signIn().then(function () {
+  var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+  window.fname = profile.getGivenName();
+  window.email = profile.getEmail();
+	}
+	)
+
 }
 
 /**
@@ -352,7 +360,7 @@ function getClassName() {
 			for (i = 0; i < courses.length; i++) {
 				var course = courses[i];
 				document.getElementById("classname").innerHTML = course.name
-				document.getElementById("classdesc").innerHTML = "Room " + course.room
+				document.getElementById("classdesc").innerHTML = "Room " + course.room + ": " + window.fname
 				console.log(course.name + " Room " + course.room)
 				window.courseId = course.id
 				
@@ -362,6 +370,7 @@ function getClassName() {
 				       // Typical action to be performed when the document is ready:
 				       var result = JSON.parse(xhttp.responseText);
 				       window.settle = result[0].split(";");
+				       window.helpLinkSign = result[1].split(";");
 				       //window.manual = JSON.parse(result[1]);
 				    }
 				};

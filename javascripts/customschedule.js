@@ -182,7 +182,20 @@ function NavloadToday() {
 	var string = reg.exec(href);
 	console.log(string)
 
-	window.currentDaySched = parseInt(string[1], 10); //https://kinderclassroom.org/edit-schedule.html
+	var regt = new RegExp( '[?&]helpteach=([^&#]*)', 'i' );
+
+	var helpTeach = regt.exec(href);
+	if (helpTeach == null) {
+	document.getElementById("activityinput").value = "Appointment"
+} else {
+	document.getElementById("activityinput").value = decodeURIComponent(helpTeach[1]) + " - Extra Help"
+}
+	
+	if (string === null) {
+		window.currentDaySched = 0;
+	} else {
+		window.currentDaySched = parseInt(string[1], 10); //https://kinderclassroom.org/edit-schedule.html
+	}
 	window.history.pushState({}, document.title, "/" + "edit-schedule.html");
 	Navupdateset()
 }
